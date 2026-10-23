@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Properties;
 
+/**
+ * Clase que representa un rectángulo SVG.
+ */
 public class SvgRect implements SVGElement {
     private Properties shape;
     
@@ -36,10 +39,18 @@ public class SvgRect implements SVGElement {
         }
     }
 
+    /**
+     * Constructor del rectángulo.
+     * @param shape Propiedades extraídas del archivo XML.
+     */
     public SvgRect(Properties shape) {
         this.shape = shape;
     }
 
+    /**
+     * Dibuja el rectángulo en el contexto gráfico.
+     * @param g2d El objeto Graphics2D utilizado para pintar.
+     */
     @Override
     public void draw(Graphics2D g2d) {
         String xStr = shape.getProperty("x");

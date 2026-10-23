@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Properties;
 
+/**
+ * Clase que representa una línea SVG y se encarga de su representación gráfica.
+ */
 public class SvgLine implements SVGElement {
     private Properties shape;
     
@@ -36,10 +39,19 @@ public class SvgLine implements SVGElement {
         }
     }
 
+        /**
+     * Constructor de la línea.
+     * @param shape Propiedades extraídas del archivo XML.
+     */
     public SvgLine(Properties shape) {
         this.shape = shape;
     }
 
+
+     /**
+     * Dibuja la línea en el contexto gráfico.
+     * @param g2d El objeto Graphics2D utilizado para pintar.
+     */
     @Override
     public void draw(Graphics2D g2d) {
         String x1Str = shape.getProperty("x1");

@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Properties;
 
+/**
+ * Clase que representa una elipse SVG.
+ */
 public class SvgEllipse implements SVGElement {
     private Properties shape;
     
@@ -36,10 +39,18 @@ public class SvgEllipse implements SVGElement {
         }
     }
 
+     /**
+     * Constructor de la elipse.
+     * @param shape Propiedades extraídas del archivo XML.
+     */
     public SvgEllipse(Properties shape) {
         this.shape = shape;
     }
 
+    /**
+     * Dibuja la elipse en el contexto gráfico.
+     * @param g2d El objeto Graphics2D utilizado para pintar.
+     */
     @Override
     public void draw(Graphics2D g2d) {
         String cxStr = shape.getProperty("cx");

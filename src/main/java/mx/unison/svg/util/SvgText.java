@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Properties;
 
+/**
+ * Clase que representa un elemento de texto SVG.
+ */
 public class SvgText implements SVGElement {
     private Properties shape;
     
@@ -36,10 +39,18 @@ public class SvgText implements SVGElement {
         }
     }
 
+     /**
+     * Constructor del elemento de texto.
+     * @param shape Propiedades extraídas del archivo XML, incluyendo el contenido.
+     */
     public SvgText(Properties shape) {
         this.shape = shape;
     }
 
+     /**
+     * Dibuja el texto en el contexto gráfico.
+     * @param g2d El objeto Graphics2D utilizado para pintar.
+     */
     @Override
     public void draw(Graphics2D g2d) {
         String xStr = shape.getProperty("x");

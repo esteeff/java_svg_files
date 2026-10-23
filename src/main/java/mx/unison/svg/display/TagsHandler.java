@@ -52,6 +52,10 @@ public class TagsHandler  extends DefaultHandler {
         super.endPrefixMapping(prefix);
     }
 
+    /**
+     * Se ejecuta cuando SAX encuentra una etiqueta de apertura en el XML.
+     * Identifica el tipo de figura y guarda sus atributos.
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         String tagName = null;

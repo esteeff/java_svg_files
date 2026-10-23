@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Properties;
 
+/**
+ * Clase que representa una polilínea SVG (secuencia de segmentos conectados).
+ */
 public class SvgPolyline implements SVGElement {
     private Properties shape;
     
@@ -36,10 +39,18 @@ public class SvgPolyline implements SVGElement {
         }
     }
 
+    /**
+     * Constructor de la polilínea.
+     * @param shape Propiedades extraídas del archivo XML.
+     */
     public SvgPolyline(Properties shape) {
         this.shape = shape;
     }
 
+    /**
+     * Dibuja la polilínea en el contexto gráfico.
+     * @param g2d El objeto Graphics2D utilizado para pintar.
+     */
     @Override
     public void draw(Graphics2D g2d) {
         String pointsStr = shape.getProperty("points");
