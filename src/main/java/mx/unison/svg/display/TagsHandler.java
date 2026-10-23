@@ -16,6 +16,7 @@ public class TagsHandler  extends DefaultHandler {
 
     private ArrayList<Properties> shapes;
     private Properties currentShape = null;
+    private StringBuilder textoActual = null;
 
     public TagsHandler() {
         super();
@@ -79,6 +80,38 @@ public class TagsHandler  extends DefaultHandler {
             shapes.add(currentShape);
         }
 
+        if (tagName.equals("polyline")) {
+            LOG.info("Starting element " + tagName);
+            currentShape = new Properties();
+            currentShape.put("type", "polyline");
+            copyAttributes(atts, currentShape);
+            shapes.add(currentShape);
+        }
+
+                if (tagName.equals("rect")) {
+            LOG.info("Starting element " + tagName);
+            currentShape = new Properties();
+            currentShape.put("type", "rect");
+            copyAttributes(atts, currentShape);
+            shapes.add(currentShape);
+        }
+
+                if (tagName.equals("ellipse")) {
+            LOG.info("Starting element " + tagName);
+            currentShape = new Properties();
+            currentShape.put("type", "ellipse");
+            copyAttributes(atts, currentShape);
+            shapes.add(currentShape);
+        }
+
+                if (tagName.equals("text")) {
+            LOG.info("Starting element " + tagName);
+            currentShape = new Properties();
+            currentShape.put("type", "text");
+            copyAttributes(atts, currentShape);
+            textoActual = new StringBuilder(); // Preparamos para leer el texto
+            shapes.add(currentShape);
+        }
     }
 
     private void copyAttributes(Attributes atts, Properties myShape) {
@@ -93,13 +126,23 @@ public class TagsHandler  extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+        String tagName = (localName == null || localName.isEmpty()) ? qName.toLowerCase() : localName.toLowerCase();
+        
+        if (tagName.equals("text") && currentShape != null) {
+            // Guardamos el texto que estaba entre las etiquetas
+            currentShape.put("content", textoActual.toString().trim());
+            textoActual = null;
+        }
         currentShape = null;
     }
 
-    @Override
+       @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-
-    }
+        // Si estamos dentro de un <text>, acumulamos las letras
+        if (textoActual != null) {
+            textoActual.append(ch, start, length);
+        }
+    }    
 
     @Override
     public void error(SAXParseException e) throws SAXException {

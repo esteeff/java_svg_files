@@ -6,6 +6,9 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import mx.unison.svg.util.SvgPolyline;
+import mx.unison.svg.util.SvgRect;
+
 import javax.swing.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -16,6 +19,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import mx.unison.svg.util.SVGElement;
+import mx.unison.svg.util.SvgLine;
+import mx.unison.svg.util.SvgPolyline;
+import mx.unison.svg.util.SvgRect;
+import mx.unison.svg.util.SvgEllipse;
+import mx.unison.svg.util.SvgText;
 
 public class SVGDiagram extends JComponent {
 
@@ -93,120 +103,40 @@ public class SVGDiagram extends JComponent {
         loadColors();
     }
 
-    @Override
+          @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         LOG.info("Painting SVG Diagram");
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(strokeColor);
 
         for (Properties shape : shapes) {
             String type = shape.getProperty("type");
+            if (type == null) continue;
 
-            if (type == null)
-                continue;
+            // Valores por defecto para cada figura
+            g2d.setStroke(new BasicStroke(1.0f));
+            g2d.setColor(Color.BLACK);
+
+            SVGElement element = null;
+
             if (type.equals("line")) {
-                String x1Str = shape.getProperty("x1");
-                String y1Str = shape.getProperty("y1");
-                String x2Str = shape.getProperty("x2");
-                String y2Str = shape.getProperty("y2");
-                String stroke = shape.getProperty("stroke");
-                String strokeWidthStr = shape.getProperty("stroke-width");
-
-                if (strokeWidthStr != null) {
-                    try {
-                        float strokeWidth = Float.parseFloat(strokeWidthStr);
-                        currentStroke = new BasicStroke(strokeWidth);
-                        g2d.setStroke(currentStroke);
-                    } catch (NumberFormatException e) {
-                        LOG.warning("Invalid stroke width: " + strokeWidthStr);
-                        currentStroke = new BasicStroke(1.0f);
-                        g2d.setStroke(currentStroke);
-                    }
-                }
-
-                if (x1Str != null && y1Str != null && x2Str != null && y2Str != null) {
-                    int x1 = Integer.parseInt(x1Str);
-                    int y1 = Integer.parseInt(y1Str);
-                    int x2 = Integer.parseInt(x2Str);
-                    int y2 = Integer.parseInt(y2Str);
-
-                    if (stroke != null) {
-                        strokeColor = null;
-
-                        try {
-                            strokeColor = Color.decode(stroke);
-                        } catch (NumberFormatException e) {
-                            LOG.warning("Invalid stroke color: " + stroke);
-                            //strokeColor = parseColor(stroke);
-                            g2d.setColor( parseColor(stroke, 1.0f) );
-                        }
-                        g2d.setColor(strokeColor);
-                    } else {
-                        g2d.setColor(strokeColor);
-                    }
-                    g2d.drawLine(x1, y1, x2, y2);
-                }
-
-            }
-            if (type.equals("circle")) {
-                String cx = shape.getProperty("cx");
-                String cy = shape.getProperty("cy");
-                String radio = shape.getProperty("r");
-                String fill = shape.getProperty("fill");
-                String stroke = shape.getProperty("stroke");
-                String strokeWidthStr = shape.getProperty("stroke-width");
-
-                if (cx != null && cy != null && radio != null) {
-                    int centroX = Integer.parseInt(cx);
-                    int centroY = Integer.parseInt(cy);
-                    int radius = Integer.parseInt(radio);
-
-                    if (fill != null) {
-                        try {
-                            fillColor = Color.decode(fill);
-                        } catch (NumberFormatException e) {
-                            LOG.warning("Invalid stroke color: " + fill);
-                            fillColor = parseColor(fill,1.0f);
-                        }
-                        g2d.setColor(fillColor);
-                        g2d.fillOval(centroX - radius, centroY - radius
-                                , radius * 2, radius * 2);
-                    }
-                    if (stroke != null) {
-                        strokeColor = null;
-
-                        try {
-                            strokeColor = Color.decode(stroke);
-                        } catch (NumberFormatException e) {
-                            LOG.warning("Invalid stroke color: " + stroke);
-                            strokeColor = parseColor(stroke);
-                        }
-                        g2d.setColor(strokeColor);
-                    } else {
-                        g2d.setColor(fillColor);
-                    }
-
-                    if (strokeWidthStr != null) {
-                        try {
-                            float strokeWidth = Float.parseFloat(strokeWidthStr);
-                            currentStroke = new BasicStroke(strokeWidth);
-                            g2d.setStroke(currentStroke);
-                        } catch (NumberFormatException e) {
-                            LOG.warning("Invalid stroke width: " + strokeWidthStr);
-                            currentStroke = new BasicStroke(1.0f);
-                            g2d.setStroke(currentStroke);
-                        }
-                    }
-                    g2d.drawOval(centroX - radius,
-                            centroY - radius,
-                            radius * 2, radius * 2);
-
-                }
+                element = new SvgLine(shape);
+            } else if (type.equals("polyline")) {
+                element = new SvgPolyline(shape);
+            } else if (type.equals("rect")) {
+                element = new SvgRect(shape);
+            } else if (type.equals("ellipse")) {
+                element = new SvgEllipse(shape);
+            } else if (type.equals("text")) {
+                element = new SvgText(shape);
+            } else if (type.equals("circle")) {
+                // El círculo lo dejamos pendiente o lo agregamos si el profe lo pide después
             }
 
+            if (element != null) {
+                element.draw(g2d);
+            }
         }
-
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/named-color

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+    
+    <!-- 1. Polilínea 1 (Zigzag azul) -->
+    <polyline points="50,50 100,150 150,50 200,150 250,50" fill="none" stroke="blue" stroke-width="3"/>
+    
+    <!-- 2. Polilínea 2 (Triángulo rojo) -->
+    <polyline points="350,50 450,150 250,150 350,50" fill="none" stroke="red" stroke-width="4"/>
+
+    <!-- 3. Rectángulo 1 (Amarillo normal) -->
+    <rect x="50" y="200" width="150" height="100" fill="yellow" stroke="black" stroke-width="2"/>
+    
+    <!-- 4. Rectángulo 2 (Verde con esquinas redondeadas) -->
+    <rect x="250" y="200" width="150" height="100" fill="lightgreen" stroke="green" stroke-width="4" rx="30" ry="30"/>
+
+    <!-- 5. Elipse 1 (Azul claro horizontal) -->
+    <ellipse cx="550" cy="250" rx="80" ry="40" fill="lightblue" stroke="navy" stroke-width="3"/>
+    
+    <!-- 6. Elipse 2 (Rosa vertical) -->
+    <ellipse cx="700" cy="250" rx="30" ry="70" fill="pink" stroke="magenta" stroke-width="3"/>
+
+    <!-- 7. Línea original -->
+    <line x1="50" y1="400" x2="750" y2="400" stroke="black" stroke-width="2"/>
+
+    <!-- 8. Texto 1 -->
+    <text x="50" y="450" font-family="Arial" font-size="24" fill="black">
+        Prueba de todas las figuras SVG
+    </text>
+
+    <!-- 9. Texto 2 -->
+    <text x="50" y="500" font-family="Times New Roman" font-size="20" fill="blue">
+        Líneas, polilíneas, rectángulos, elipses y texto.
+    </text>
+
+</svg>
